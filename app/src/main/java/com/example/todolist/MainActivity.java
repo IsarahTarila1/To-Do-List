@@ -1,9 +1,12 @@
 package com.example.todolist;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,6 +43,20 @@ public class MainActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                     taskInput.setText("");
                 }
+            }
+        });
+        taskList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Delete Task").setMessage("Do you want to delete this task").setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String selectedTask = tasks.get(position);
+                        tasks.remove(selectedTask);
+                        adapter.notifyDataSetChanged();
+                    }
+                }).setNegativeButton("cancel",null).create().show();
             }
         });
     }
